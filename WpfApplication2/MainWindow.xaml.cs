@@ -136,24 +136,31 @@ namespace DataGridExample
                 var cellOne = GetCell(dataGrid, row, 0);
                 var cellTwo = GetCell(dataGrid, row, 1);
 
-                var grid = FindVisualChild<Grid>(FindVisualChild<ContentPresenter>(FindVisualChild<ContentPresenter>(cellOne)));
+                var grid = FindVisualChild<Grid>(cellOne);
+                var textBlock = FindVisualChild<TextBlock>(cellTwo);
 
-
-                if (grid == null)
+                if (grid != null)
                 {
-                    continue;
+                    var button = (Button)grid.Children[0];
+
+                    if (maxWidthFirst < button.ActualWidth)
+                    {
+                        maxWidthFirst = button.ActualWidth;
+                    }
                 }
 
-                var button = (Button)grid.Children[0];
-
-                if (maxWidthFirst < button.ActualWidth)
+                if (textBlock != null)
                 {
-                    maxWidthFirst = button.ActualWidth;
+                    if (maxWidthSecond < textBlock.ActualWidth)
+                    {
+                        maxWidthSecond = textBlock.ActualWidth;
+                    }
                 }
             }
 
             this.lenghtLabel.Content = maxWidthFirst;
             this.dataGrid.Columns[0].Width = new DataGridLength(maxWidthFirst + 5);
+            this.dataGrid.Columns[1].Width = new DataGridLength(maxWidthSecond + 5);
         }
     }
 
